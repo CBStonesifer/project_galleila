@@ -1,0 +1,89 @@
+(footprint "Testpoint-Pad"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -10.87039 -8.078458 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "91632d9e-817e-4159-a540-422e082d291b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "Testpoint-Pad"
+		(at -10.87039 -6.578458 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "d5e160a0-ac76-4c43-a4c8-ddfe01616be6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at -2.23439 -2.236458 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a8df1551-1a2b-4b93-80a3-388512861a76")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at -2.23439 -2.236458 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "49cd1369-0b2d-4a15-ac80-cac05110ec8b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_rect
+		(start 0 0)
+		(end 3 3)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "6a9bd048-bb44-4111-bac7-ccf5ad24246c")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -10.87039 -5.078458 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "594b4593-629e-4308-992a-6648e6cabe49")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at 1.5 1.5)
+		(size 2.54 2.54)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.15)
+		(uuid "63b47117-d2b8-46c0-9f44-7016e0c7bc57")
+	)
+	(embedded_fonts no)
+)
