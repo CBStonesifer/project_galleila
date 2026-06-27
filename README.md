@@ -16,6 +16,15 @@ firmware/     — Arduino sketch for ESP32 (RC decode + motor mixing)
 
 ---
 
+## Design Decisions
+
+- **Beater bar weapon** — a relatively simple and proven design with high impact potential in the arena. The main weakness is being flipped; a lower profile in V2 addresses this directly.
+- **Skid-steer drivetrain** — keeps mechanical complexity low while maintaining full mobility. No steering linkage, no Ackermann geometry, just two independently driven wheels.
+- **Belt-driven weapon** — the GT2 20T/60T pulley ratio amplifies the motor's output speed to spin the beater bar faster than a direct-drive setup would allow.
+- **Unitary printed body** — a single-piece chassis provides structural strength without mechanical interlocks between parts. Drive and weapon geometry were validated as separate prints first, then merged once the layout was confirmed.
+
+---
+
 ## Bill of Materials
 
 | # | Component | Part | Qty | Specs | Link |
@@ -135,7 +144,7 @@ loop()
   └── fault poll       — read GPIO 33 nFAULT → Serial.print @ 115200
 ```
 
-### Motor Mixing (skid-steer)
+### Motor Mixing
 
 - **Straight:** `left = right = throttle`
 - **Driving turn:** inner wheel = `throttle × (TURN_MIX_RATIO / 100)`
@@ -167,28 +176,37 @@ loop()
 
 ---
 
-## Known Issues
+## Testing & Validation
 
-These are the honest limitations of V1:
+The bot was driven under full battery power with all systems operating independently:
 
-- **Motor sizing unverified** — DRV8833 is rated for 1.5 A continuous / 2 A peak per channel. Motor stall currents have not been measured; choosing motors with high stall current will thermally load or latch the drivers.
-- **Fault handling is passive** — `nFAULT` on GPIO 33 is polled and printed to Serial but does not cut motor output. A driver fault during a match will not stop the bot.
-- **`pulseIn()` blocks the loop** — RC decode uses blocking `pulseIn()` calls. At 20 ms RC frame rate this is fine, but it prevents any concurrent processing (e.g., fault response).
-- **PLA is prototype-grade** — adequate for bench testing, fragile in hard combat impacts. Weapon impactor especially is subject to shatter.
+- **Drive** — successfully accelerated, turned, and reversed at varying speeds under RC control.
+- **Weapon** — spun up to full speed and was toggled on and off from the transmitter.
+- **Carpet performance** — struggled on carpet. The wheels lacked grip, and the design relies on the body sliding along the ground to stay low against opponents — which doesn't work well on high-friction surfaces.
+- **Battery connector** — the 3-pin JST-XH plugs do not physically prevent reverse polarity insertion. Connecting the battery backwards is easy to do and will damage the board.
 
 ---
 
-## Further Improvements (V2)
+## Known Issues & Further Improvements (V2)
 
-These are the obvious next steps — already planned:
-
-- **Right-size the drivers** — measure motor stall current, swap DRV8833 for a driver with appropriate continuous rating (e.g., DRV8874, TB6612FNG, or discrete FETs for higher current).
-- **Active fault response** — nFAULT interrupt → immediate motor cutoff, not just a Serial print.
-- **Non-blocking RC decode** — replace `pulseIn()` with interrupt-driven pulse capture to free the loop for concurrent tasks.
-- **Weapon arm/disarm logic** — currently a raw threshold toggle; a proper arm sequence (e.g., hold for 1 s) would prevent accidental spin-up.
+- **Chassis Side Overhangs** — the overhangs on the side were quickly added to thicken the width of the walls to strengthen the bot, and for style. They provide a grip for another bot to easily flip the vehicle. The next design should minimize the gap between the side edges and the ground.
+- **Hard Power Cut-Off** — as per NHRL rules, the bot requires a quick physical power disconnect to disable movement and weapon systems, not just a code deactivation.
 - **Hardened weapon impactor** — machine or print in PETG/nylon/polycarbonate; evaluate a metal impactor for the beater bar.
-- **Weight optimization** — V1 BOM was chosen for availability, not mass. Profile actual component weights and re-spec motors, battery, and hardware for the 3 lb envelope.
-- **Documented print settings** — record layer height, infill %, wall count, and orientation for each part so prints are reproducible without guesswork.
+- **Weight optimization** — the current design is 2.76 lbs, which leaves room to upgrade/add additional parts (i.e. the weapon material should be metal).
+- **Optimize print settings** — a final print with more granular layer heights and higher infill will strengthen the hull.
+- **A Roof** — the top of the bot needs a solid roof that could also act as a battery retainer. Batteries are currently loose within the chassis.
+- **Sweet Paint Job** — the bot needs some decals and a layer of spray paint to make it look more threatening.
+- **Wheel Grips and Covers** — the wheels are exposed and use electrical tape for grip. They must be better protected, as immobility is an immediate loss in the arena. A set of proper tires would help with mobility, and the front shovel can catch on uneven surfaces.
+- **Beater Bar orientation is reversed** — the edge of the beater bar faces inward, counter to the direction the bar spins. Opposing robots are hit with the blunt edge of the weapon rather than the sharp, scraping side that should brush close to the ground.
+---
+
+## Tools Required
+
+- **3D printer** — Bambu A1 (or equivalent FDM printer capable of PLA-CF)
+- **Soldering iron** — flux is mandatory; makes the joints significantly cleaner and easier
+- **Wire stripper**
+- **Extra header pins**
+- **Assorted screws and a screwdriver**
 
 ---
 
